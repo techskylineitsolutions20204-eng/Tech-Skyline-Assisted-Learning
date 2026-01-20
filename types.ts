@@ -30,6 +30,8 @@ export interface LearningStep {
   skills: string[];
   certifications: string[];
   timeline: 'Foundational' | 'Growth' | 'Future Frontier';
+  timeCommitment: string;
+  prerequisites: string[];
 }
 
 export interface Lab {

@@ -28,6 +28,13 @@ export const generateLearningPath = async (
     - Growth (2027–2029)
     - Future Frontier (2028–2030)
     
+    For each learning step, you MUST provide:
+    1. A detailed title and description.
+    2. Specific skills to acquire.
+    3. Estimated time commitment (e.g., "4-6 weeks", "3 months").
+    4. Prerequisite knowledge required to start this specific step.
+    5. Relevant certifications.
+
     For the "labs" section, prioritize recommending specific real-world platforms:
     - Programming: freeCodeCamp, Replit, CodeSandbox
     - Cybersecurity: TryHackMe, Any.run, SANS CyberAces
@@ -58,9 +65,11 @@ export const generateLearningPath = async (
                   description: { type: Type.STRING },
                   skills: { type: Type.ARRAY, items: { type: Type.STRING } },
                   certifications: { type: Type.ARRAY, items: { type: Type.STRING } },
-                  timeline: { type: Type.STRING, enum: ['Foundational', 'Growth', 'Future Frontier'] }
+                  timeline: { type: Type.STRING, enum: ['Foundational', 'Growth', 'Future Frontier'] },
+                  timeCommitment: { type: Type.STRING },
+                  prerequisites: { type: Type.ARRAY, items: { type: Type.STRING } }
                 },
-                required: ['title', 'description', 'skills', 'timeline']
+                required: ['title', 'description', 'skills', 'timeline', 'timeCommitment', 'prerequisites']
               }
             },
             labs: { 
