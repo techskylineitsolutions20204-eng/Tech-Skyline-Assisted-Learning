@@ -21,8 +21,7 @@ interface DomainConfig {
   courseLink: string;
   labLink: string;
   topPlatform: string;
-  secondaryLink?: string;
-  secondaryLabel?: string;
+  secondaryLinks?: { label: string; url: string }[];
 }
 
 const domains: DomainConfig[] = [
@@ -31,12 +30,15 @@ const domains: DomainConfig[] = [
     icon: <ShieldIcon className="w-6 h-6" />, 
     color: 'text-red-400', 
     bg: 'bg-red-500/10', 
-    activeLabs: 45,
-    courseLink: 'https://portswigger.net/web-security',
-    labLink: 'https://tryhackme.com/hacktivities',
-    topPlatform: 'PortSwigger & THM',
-    secondaryLink: 'https://opensecuritytraining.info/',
-    secondaryLabel: 'Open Security Training'
+    activeLabs: 50,
+    courseLink: 'https://www.isc2.org/landing/1mcc',
+    labLink: 'https://www.cisco.com/site/us/en/learn/training-certifications/training/netacad/index.html',
+    topPlatform: 'ISC2, Cisco & SANS',
+    secondaryLinks: [
+      { label: 'SANS CyberAces', url: 'https://www.sans.org/cyberaces' },
+      { label: 'CyberDegrees Free', url: 'https://www.cyberdegrees.org/resources/free-online-courses/' },
+      { label: 'PortSwigger Academy', url: 'https://portswigger.net/web-security' }
+    ]
   },
   { 
     id: TechDomain.CLOUD, 
@@ -171,7 +173,7 @@ const DomainExplorer: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <PlayCircle className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-              Open Course
+              Course Portal
             </a>
             <a 
               href={domain.labLink}
@@ -181,19 +183,25 @@ const DomainExplorer: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <Terminal className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-              Access Lab
+              Live Labs
             </a>
-            {domain.secondaryLink && (
-              <a 
-                href={domain.secondaryLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2 rounded-xl bg-white/5 text-[9px] font-bold uppercase tracking-widest text-slate-400 border border-dashed border-white/10 hover:border-cyan-500/40 hover:text-cyan-400 transition-all flex items-center justify-center gap-1.5"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <ExternalLink className="w-3 h-3" />
-                {domain.secondaryLabel}
-              </a>
+            
+            {domain.secondaryLinks && (
+              <div className="pt-2 space-y-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {domain.secondaryLinks.map((link, idx) => (
+                  <a 
+                    key={idx}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-1.5 px-2 rounded-lg bg-black/20 text-[8px] font-bold uppercase tracking-widest text-slate-400 border border-white/5 hover:border-cyan-500/40 hover:text-cyan-400 transition-all flex items-center justify-between"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span>{link.label}</span>
+                    <ExternalLink className="w-2.5 h-2.5" />
+                  </a>
+                ))}
+              </div>
             )}
           </div>
 
@@ -201,10 +209,10 @@ const DomainExplorer: React.FC = () => {
           <div className="absolute inset-x-0 top-0 bg-black/90 backdrop-blur-sm p-4 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-500 border-b border-white/10 z-10">
              <div className="flex items-center gap-2 text-cyan-400 mb-2">
                 <Zap className="w-3 h-3" />
-                <span className="text-[9px] font-bold uppercase tracking-[0.2em]">Live Learning Access</span>
+                <span className="text-[9px] font-bold uppercase tracking-[0.2em]">Live Tech Access</span>
              </div>
              <p className="text-xs text-slate-400 leading-tight">
-                Instantly connect to {domain.topPlatform} and start practicing {domain.id} now.
+                Instantly connect to {domain.topPlatform} industry-standard environments for {domain.id}.
              </p>
           </div>
         </div>

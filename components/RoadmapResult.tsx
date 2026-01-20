@@ -20,7 +20,10 @@ const RESOURCE_LINKS: Record<string, string> = {
   'TryHackMe': 'https://tryhackme.com/hacktivities',
   'PortSwigger Academy': 'https://portswigger.net/web-security',
   'OpenSecurityTraining': 'https://opensecuritytraining.info/',
+  'ISC2 Certified in Cybersecurity': 'https://www.isc2.org/landing/1mcc',
   'SANS CyberAces': 'https://www.sans.org/cyberaces',
+  'Cisco NetAcad': 'https://www.cisco.com/site/us/en/learn/training-certifications/training/netacad/index.html',
+  'CyberDegrees': 'https://www.cyberdegrees.org/resources/free-online-courses/',
   'LabEx': 'https://labex.io/',
   'Great Learning': 'https://www.mygreatlearning.com/cloud-computing/free-courses',
   'IBM SkillsBuild': 'https://skillsbuild.org/students/course-catalog/artificial-intelligence',
@@ -176,7 +179,7 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
             </div>
             <div className="space-y-4">
               <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Security Academy & Interactive Labs</h4>
-              {['PortSwigger Academy', 'TryHackMe', 'OpenSecurityTraining', 'Any.run'].map(platform => (
+              {['ISC2 Certified in Cybersecurity', 'SANS CyberAces', 'Cisco NetAcad', 'PortSwigger Academy', 'TryHackMe', 'CyberDegrees'].map(platform => (
                 <a 
                   key={platform}
                   href={RESOURCE_LINKS[platform]}

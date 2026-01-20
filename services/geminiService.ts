@@ -36,7 +36,7 @@ export const generateLearningPath = async (
     5. Relevant certifications.
 
     For the "labs" and "courses" section, prioritize recommending specific real-world platforms:
-    - Cybersecurity: PortSwigger Academy (Web Security), OpenSecurityTraining.info (Deep Tech), TryHackMe (Hacktivities), SANS CyberAces.
+    - Cybersecurity: ISC2 (Certified in Cybersecurity - 1MCC), PortSwigger Academy, TryHackMe, SANS CyberAces, Cisco Networking Academy (NetAcad), CyberDegrees.org, OpenSecurityTraining.info.
     - Cloud & AI: Google Skills Paths (https://www.skills.google/paths), IBM SkillsBuild, Google Colab.
     - Programming: freeCodeCamp, Replit, CodeSandbox.
     - Cloud/DevOps: Great Learning, LabEx, GitHub Codespaces.
