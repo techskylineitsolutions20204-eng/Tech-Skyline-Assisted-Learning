@@ -7,10 +7,10 @@ import React from 'react';
 import { 
   ShieldIcon, CloudIcon, CodeIcon, DatabaseIcon, 
   CpuIcon, BlockchainIcon, QuantumIcon, EnterpriseIcon, 
-  UXIcon, PeopleIcon, ChevronRightIcon
+  UXIcon, PeopleIcon
 } from './icons';
 import { TechDomain } from '../types';
-import { ExternalLink, Terminal, PlayCircle } from 'lucide-react';
+import { ExternalLink, Terminal, PlayCircle, Zap } from 'lucide-react';
 
 interface DomainConfig {
   id: TechDomain;
@@ -21,6 +21,8 @@ interface DomainConfig {
   courseLink: string;
   labLink: string;
   topPlatform: string;
+  secondaryLink?: string;
+  secondaryLabel?: string;
 }
 
 const domains: DomainConfig[] = [
@@ -29,10 +31,12 @@ const domains: DomainConfig[] = [
     icon: <ShieldIcon className="w-6 h-6" />, 
     color: 'text-red-400', 
     bg: 'bg-red-500/10', 
-    activeLabs: 12,
-    courseLink: 'https://www.sans.org/cyberaces',
-    labLink: 'https://tryhackme.com/classrooms',
-    topPlatform: 'TryHackMe'
+    activeLabs: 45,
+    courseLink: 'https://portswigger.net/web-security',
+    labLink: 'https://tryhackme.com/hacktivities',
+    topPlatform: 'PortSwigger & THM',
+    secondaryLink: 'https://opensecuritytraining.info/',
+    secondaryLabel: 'Open Security Training'
   },
   { 
     id: TechDomain.CLOUD, 
@@ -40,9 +44,9 @@ const domains: DomainConfig[] = [
     color: 'text-blue-400', 
     bg: 'bg-blue-500/10', 
     activeLabs: 24,
-    courseLink: 'https://www.mygreatlearning.com/cloud-computing/free-courses',
+    courseLink: 'https://www.skills.google/paths',
     labLink: 'https://github.com/features/codespaces',
-    topPlatform: 'AWS/GCP Labs'
+    topPlatform: 'Google Skills & Codespaces'
   },
   { 
     id: TechDomain.DEV_DEVOPS, 
@@ -158,7 +162,7 @@ const DomainExplorer: React.FC = () => {
             Via {domain.topPlatform}
           </p>
 
-          <div className="mt-auto space-y-2">
+          <div className="mt-auto space-y-2 relative z-10">
             <a 
               href={domain.courseLink}
               target="_blank"
@@ -167,7 +171,7 @@ const DomainExplorer: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <PlayCircle className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-              Study Technology
+              Open Course
             </a>
             <a 
               href={domain.labLink}
@@ -177,18 +181,30 @@ const DomainExplorer: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <Terminal className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-              Practice In Lab
+              Access Lab
             </a>
+            {domain.secondaryLink && (
+              <a 
+                href={domain.secondaryLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2 rounded-xl bg-white/5 text-[9px] font-bold uppercase tracking-widest text-slate-400 border border-dashed border-white/10 hover:border-cyan-500/40 hover:text-cyan-400 transition-all flex items-center justify-center gap-1.5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ExternalLink className="w-3 h-3" />
+                {domain.secondaryLabel}
+              </a>
+            )}
           </div>
 
           {/* Detailed Platform Info on Hover */}
           <div className="absolute inset-x-0 top-0 bg-black/90 backdrop-blur-sm p-4 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-500 border-b border-white/10 z-10">
              <div className="flex items-center gap-2 text-cyan-400 mb-2">
                 <Zap className="w-3 h-3" />
-                <span className="text-[9px] font-bold uppercase tracking-[0.2em]">Quick Access Hub</span>
+                <span className="text-[9px] font-bold uppercase tracking-[0.2em]">Live Learning Access</span>
              </div>
              <p className="text-xs text-slate-400 leading-tight">
-                Instantly launch industry-leading {domain.id} environments with assisted voice guidance.
+                Instantly connect to {domain.topPlatform} and start practicing {domain.id} now.
              </p>
           </div>
         </div>
@@ -196,12 +212,5 @@ const DomainExplorer: React.FC = () => {
     </div>
   );
 };
-
-// Internal icon for the quick access hub
-const Zap = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-  </svg>
-);
 
 export default DomainExplorer;

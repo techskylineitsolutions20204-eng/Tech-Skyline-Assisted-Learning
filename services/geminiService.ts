@@ -35,11 +35,11 @@ export const generateLearningPath = async (
     4. Prerequisite knowledge required to start this specific step.
     5. Relevant certifications.
 
-    For the "labs" section, prioritize recommending specific real-world platforms:
-    - Programming: freeCodeCamp, Replit, CodeSandbox
-    - Cybersecurity: TryHackMe, Any.run, SANS CyberAces
-    - Data/AI: Google Colab, IBM SkillsBuild
-    - Cloud/DevOps: Great Learning, LabEx, GitHub Codespaces
+    For the "labs" and "courses" section, prioritize recommending specific real-world platforms:
+    - Cybersecurity: PortSwigger Academy (Web Security), OpenSecurityTraining.info (Deep Tech), TryHackMe (Hacktivities), SANS CyberAces.
+    - Cloud & AI: Google Skills Paths (https://www.skills.google/paths), IBM SkillsBuild, Google Colab.
+    - Programming: freeCodeCamp, Replit, CodeSandbox.
+    - Cloud/DevOps: Great Learning, LabEx, GitHub Codespaces.
     
     Incorporate relevant technologies from these domains where applicable:
     Cybersecurity, Cloud (AWS/Azure/GCP), DevOps/SRE, Data Engineering, IoT/Edge, Blockchain, Quantum Computing, and Enterprise Management (Oracle Primavera, Scrum, Agile).

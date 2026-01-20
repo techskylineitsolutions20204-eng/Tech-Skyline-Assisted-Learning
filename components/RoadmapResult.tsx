@@ -16,7 +16,10 @@ interface RoadmapResultProps {
 const RESOURCE_LINKS: Record<string, string> = {
   'freeCodeCamp': 'https://www.freecodecamp.org/',
   'Google Colab': 'https://colab.research.google.com/',
-  'TryHackMe': 'https://tryhackme.com/classrooms',
+  'Google Skills': 'https://www.skills.google/paths',
+  'TryHackMe': 'https://tryhackme.com/hacktivities',
+  'PortSwigger Academy': 'https://portswigger.net/web-security',
+  'OpenSecurityTraining': 'https://opensecuritytraining.info/',
   'SANS CyberAces': 'https://www.sans.org/cyberaces',
   'LabEx': 'https://labex.io/',
   'Great Learning': 'https://www.mygreatlearning.com/cloud-computing/free-courses',
@@ -154,8 +157,8 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
             <div className="space-y-4">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Dev & Interactive Labs</h4>
-              {['freeCodeCamp', 'Replit', 'CodeSandbox', 'GitHub Codespaces'].map(platform => (
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Cloud, AI & Tech Paths</h4>
+              {['Google Skills', 'freeCodeCamp', 'IBM SkillsBuild', 'Google Colab'].map(platform => (
                 <a 
                   key={platform}
                   href={RESOURCE_LINKS[platform]}
@@ -172,8 +175,8 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
               ))}
             </div>
             <div className="space-y-4">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Security & Advanced Infrastructure</h4>
-              {['TryHackMe', 'SANS CyberAces', 'Any.run', 'LabEx'].map(platform => (
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Security Academy & Interactive Labs</h4>
+              {['PortSwigger Academy', 'TryHackMe', 'OpenSecurityTraining', 'Any.run'].map(platform => (
                 <a 
                   key={platform}
                   href={RESOURCE_LINKS[platform]}
