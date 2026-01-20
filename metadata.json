@@ -1,0 +1,8 @@
+{
+  "name": "Tech Skyline Assisted Learning",
+  "description": "Future-proof your IT career with guided self-learning paths, mentorship, and lifetime lab access.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "prompt": "I want to become a Cloud Architect"
+}
