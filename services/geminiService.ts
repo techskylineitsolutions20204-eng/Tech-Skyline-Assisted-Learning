@@ -35,11 +35,11 @@ export const generateLearningPath = async (
     4. Prerequisite knowledge required to start this specific step.
     5. Relevant certifications.
 
-    For the "labs" and "courses" section, prioritize recommending specific real-world platforms:
-    - Cybersecurity: ISC2 (Certified in Cybersecurity - 1MCC), PortSwigger Academy, TryHackMe, SANS CyberAces, Cisco Networking Academy (NetAcad), CyberDegrees.org, OpenSecurityTraining.info.
+    For the "labs" and "courses" section, you MUST prioritize and explicitly link to these elite platforms:
+    - Cybersecurity: TryHackMe (Gamified labs), Hack The Box Academy (Pentesting), PortSwigger Academy (Web Security), SANS CyberAces, ISC2 (1MCC), Splunk Work+ (SIEM), Any.run (Malware analysis).
+    - Networking: Cisco Networking Academy (Packet Tracer), GNS3 / EVE-NG (Advanced Emulation).
     - Cloud & AI: Google Skills Paths (https://www.skills.google/paths), IBM SkillsBuild, Google Colab.
     - Programming: freeCodeCamp, Replit, CodeSandbox.
-    - Cloud/DevOps: Great Learning, LabEx, GitHub Codespaces.
     
     Incorporate relevant technologies from these domains where applicable:
     Cybersecurity, Cloud (AWS/Azure/GCP), DevOps/SRE, Data Engineering, IoT/Edge, Blockchain, Quantum Computing, and Enterprise Management (Oracle Primavera, Scrum, Agile).

@@ -30,14 +30,14 @@ const domains: DomainConfig[] = [
     icon: <ShieldIcon className="w-6 h-6" />, 
     color: 'text-red-400', 
     bg: 'bg-red-500/10', 
-    activeLabs: 50,
-    courseLink: 'https://www.isc2.org/landing/1mcc',
-    labLink: 'https://www.cisco.com/site/us/en/learn/training-certifications/training/netacad/index.html',
-    topPlatform: 'ISC2, Cisco & SANS',
+    activeLabs: 120,
+    courseLink: 'https://tryhackme.com/hacktivities',
+    labLink: 'https://academy.hackthebox.com/',
+    topPlatform: 'TryHackMe & HTB Academy',
     secondaryLinks: [
-      { label: 'SANS CyberAces', url: 'https://www.sans.org/cyberaces' },
-      { label: 'CyberDegrees Free', url: 'https://www.cyberdegrees.org/resources/free-online-courses/' },
-      { label: 'PortSwigger Academy', url: 'https://portswigger.net/web-security' }
+      { label: 'PortSwigger Academy', url: 'https://portswigger.net/web-security' },
+      { label: 'Splunk Free Training', url: 'https://www.splunk.com/en_us/training/free-courses/splunk-fundamentals-1.html' },
+      { label: 'ISC2 Free Certification', url: 'https://www.isc2.org/landing/1mcc' }
     ]
   },
   { 
@@ -45,10 +45,15 @@ const domains: DomainConfig[] = [
     icon: <CloudIcon className="w-6 h-6" />, 
     color: 'text-blue-400', 
     bg: 'bg-blue-500/10', 
-    activeLabs: 24,
-    courseLink: 'https://www.skills.google/paths',
-    labLink: 'https://github.com/features/codespaces',
-    topPlatform: 'Google Skills & Codespaces'
+    activeLabs: 45,
+    courseLink: 'https://www.netacad.com/courses/packet-tracer',
+    labLink: 'https://www.gns3.com/',
+    topPlatform: 'Cisco NetAcad & GNS3',
+    secondaryLinks: [
+      { label: 'Google Skills Paths', url: 'https://www.skills.google/paths' },
+      { label: 'EVE-NG Emulation', url: 'https://www.eve-ng.net/' },
+      { label: 'AWS Educate', url: 'https://aws.amazon.com/education/awseducate/' }
+    ]
   },
   { 
     id: TechDomain.DEV_DEVOPS, 
@@ -173,7 +178,7 @@ const DomainExplorer: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <PlayCircle className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-              Course Portal
+              Open Portal
             </a>
             <a 
               href={domain.labLink}
@@ -183,7 +188,7 @@ const DomainExplorer: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <Terminal className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-              Live Labs
+              Direct Lab Access
             </a>
             
             {domain.secondaryLinks && (
@@ -209,10 +214,10 @@ const DomainExplorer: React.FC = () => {
           <div className="absolute inset-x-0 top-0 bg-black/90 backdrop-blur-sm p-4 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-500 border-b border-white/10 z-10">
              <div className="flex items-center gap-2 text-cyan-400 mb-2">
                 <Zap className="w-3 h-3" />
-                <span className="text-[9px] font-bold uppercase tracking-[0.2em]">Live Tech Access</span>
+                <span className="text-[9px] font-bold uppercase tracking-[0.2em]">Industry Standard Access</span>
              </div>
              <p className="text-xs text-slate-400 leading-tight">
-                Instantly connect to {domain.topPlatform} industry-standard environments for {domain.id}.
+                Get full access to industry-recognized simulations and gamified labs for {domain.id}.
              </p>
           </div>
         </div>

@@ -18,11 +18,16 @@ const RESOURCE_LINKS: Record<string, string> = {
   'Google Colab': 'https://colab.research.google.com/',
   'Google Skills': 'https://www.skills.google/paths',
   'TryHackMe': 'https://tryhackme.com/hacktivities',
+  'HTB Academy': 'https://academy.hackthebox.com/',
   'PortSwigger Academy': 'https://portswigger.net/web-security',
   'OpenSecurityTraining': 'https://opensecuritytraining.info/',
   'ISC2 Certified in Cybersecurity': 'https://www.isc2.org/landing/1mcc',
   'SANS CyberAces': 'https://www.sans.org/cyberaces',
   'Cisco NetAcad': 'https://www.cisco.com/site/us/en/learn/training-certifications/training/netacad/index.html',
+  'Cisco Packet Tracer': 'https://www.netacad.com/courses/packet-tracer',
+  'GNS3 Emulation': 'https://www.gns3.com/',
+  'EVE-NG Emulation': 'https://www.eve-ng.net/',
+  'Splunk Work+': 'https://www.splunk.com/en_us/training/free-courses/splunk-fundamentals-1.html',
   'CyberDegrees': 'https://www.cyberdegrees.org/resources/free-online-courses/',
   'LabEx': 'https://labex.io/',
   'Great Learning': 'https://www.mygreatlearning.com/cloud-computing/free-courses',
@@ -160,8 +165,8 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
             <div className="space-y-4">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Cloud, AI & Tech Paths</h4>
-              {['Google Skills', 'freeCodeCamp', 'IBM SkillsBuild', 'Google Colab'].map(platform => (
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Cloud, AI & Networking Emulation</h4>
+              {['Google Skills', 'Cisco Packet Tracer', 'GNS3 Emulation', 'EVE-NG Emulation', 'GitHub Codespaces'].map(platform => (
                 <a 
                   key={platform}
                   href={RESOURCE_LINKS[platform]}
@@ -178,8 +183,8 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
               ))}
             </div>
             <div className="space-y-4">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Security Academy & Interactive Labs</h4>
-              {['ISC2 Certified in Cybersecurity', 'SANS CyberAces', 'Cisco NetAcad', 'PortSwigger Academy', 'TryHackMe', 'CyberDegrees'].map(platform => (
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest px-2">Cyber Labs & Threat Intelligence</h4>
+              {['TryHackMe', 'HTB Academy', 'Splunk Work+', 'PortSwigger Academy', 'SANS CyberAces'].map(platform => (
                 <a 
                   key={platform}
                   href={RESOURCE_LINKS[platform]}
