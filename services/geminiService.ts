@@ -31,15 +31,17 @@ export const generateLearningPath = async (
     For each learning step, you MUST provide:
     1. A detailed title and description.
     2. Specific skills to acquire.
-    3. Estimated time commitment (e.g., "4-6 weeks", "3 months").
-    4. Prerequisite knowledge required to start this specific step.
+    3. Estimated time commitment.
+    4. Prerequisite knowledge.
     5. Relevant certifications.
 
-    For the "labs" and "courses" section, you MUST prioritize and explicitly link to these elite platforms:
-    - Cybersecurity: TryHackMe (Gamified labs), Hack The Box Academy (Pentesting), PortSwigger Academy (Web Security), SANS CyberAces, ISC2 (1MCC), Splunk Work+ (SIEM), Any.run (Malware analysis).
-    - Networking: Cisco Networking Academy (Packet Tracer), GNS3 / EVE-NG (Advanced Emulation).
-    - Cloud & AI: Google Skills Paths (https://www.skills.google/paths), IBM SkillsBuild, Google Colab.
-    - Programming: freeCodeCamp, Replit, CodeSandbox.
+    For the "labs" and "courses" section, you MUST explicitly recommend and link to these exact industry-standard platforms:
+    - Cybersecurity & Pentesting: TryHackMe (Gamified), Hack The Box Academy (Advanced), PortSwigger Academy (Web), SANS CyberAces, RangeForce (Defensive), PentesterLab.
+    - Defensive & SOC: Security Onion (Analysis), Splunk Work+ (SIEM), ELK Stack Labs, Autopsy (Forensics).
+    - Networking & Emulation: Cisco Networking Academy (Packet Tracer), GNS3 (Network Emulation), EVE-NG (Advanced Lab).
+    - Cloud Security: AWS Skill Builder, Microsoft Azure Labs, Google Cloud Skills Boost, CloudGoat (Attack Simulation), Cloud Security Alliance (CSA).
+    - DevSecOps: OWASP Juice Shop (Vulnerable App), Docker & Kubernetes Playgrounds, GitHub Security Labs.
+    - Identity & GRC: Auth0 Playground, AWS IAM Workshops, RSA Archer Labs.
     
     Incorporate relevant technologies from these domains where applicable:
     Cybersecurity, Cloud (AWS/Azure/GCP), DevOps/SRE, Data Engineering, IoT/Edge, Blockchain, Quantum Computing, and Enterprise Management (Oracle Primavera, Scrum, Agile).
@@ -95,26 +97,18 @@ export const generateLearningPath = async (
       if (finishReason === 'SAFETY') {
         throw new RoadmapError("Our AI systems identified content that violates safety guidelines. Please refine your goal and try again.", "SAFETY_BLOCK");
       }
-      throw new RoadmapError("The AI service returned an empty roadmap. This might be a temporary issue.", "EMPTY_RESPONSE");
+      throw new RoadmapError("The AI service returned an empty roadmap.", "EMPTY_RESPONSE");
     }
 
     try {
       const data = JSON.parse(response.text);
-      if (!data.steps || !Array.isArray(data.steps) || data.steps.length === 0) {
-        throw new Error("Invalid roadmap structure: missing learning steps.");
-      }
       return data as CareerRoadmap;
     } catch (parseError) {
-      console.error("JSON Parsing Error:", parseError, "Raw text:", response.text);
-      throw new RoadmapError("We encountered an error processing the generated roadmap data. Please try a different query.", "PARSE_ERROR");
+      throw new RoadmapError("We encountered an error processing the generated roadmap data.", "PARSE_ERROR");
     }
 
   } catch (err: any) {
     if (err instanceof RoadmapError) throw err;
-    const status = err?.status || (err?.message?.includes('429') ? 429 : 500);
-    if (status === 429) {
-      throw new RoadmapError("High traffic detected. Please wait a moment before generating another roadmap.", "QUOTA_EXCEEDED");
-    }
     throw new RoadmapError(
       err?.message || "An unexpected error occurred while connecting to the Tech Skyline intelligence engine.",
       "API_ERROR"
