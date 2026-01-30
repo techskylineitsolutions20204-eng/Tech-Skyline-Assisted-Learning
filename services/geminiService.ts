@@ -28,31 +28,31 @@ export const generateLearningPath = async (
     - Growth (2027–2029)
     - Future Frontier (2028–2030)
     
-    You MUST prioritize recommending these specific "Full Permission" industry-standard labs and platforms:
+    You MUST prioritize recommending these specific "Full Permission" industry-standard labs and platforms to ensure the user has "Zero-Downtime" access to live environments:
 
-    1. CYBERSECURITY & RISK MANAGEMENT:
-       - RED TEAM: TryHackMe (Guided labs), Hack The Box Academy (Advanced), PortSwigger Academy (Web), PentesterLab, Immersive Labs.
-       - BLUE TEAM / SOC: RangeForce (Enterprise Cyber Range), Blue Team Labs Online (SOC), Security Onion (SIEM), Splunk Work+ / Splunk BOTS.
-       - GRC & INFRA: ISC2 (1MCC), SANS CyberAces, OpenSecurityTraining.info.
-       - FORENSICS: Autopsy, Volatility, Any.run, Cuckoo Sandbox.
+    1. GOOGLE ECOSYSTEM (CLOUD & CYBERSECURITY):
+       - Google Cloud Skills Boost (Formerly Qwiklabs): Use for REAL GCP projects, IAM hardening, VPC security, GKE, and Chronicle SIEM basics.
+       - Google Cloud Shell: For permanent Linux terminal access and security automation (gcloud, kubectl, terraform).
+       - Google Cloud Free Tier: For permanent free account resources (IAM, VPC, Logging).
+       - Google Cybersecurity Professional Certificate (Coursera): For SOC fundamentals and IR.
 
-    2. NETWORKING & INFRASTRUCTURE:
-       - Cisco Networking Academy (NetAcad), Cisco Packet Tracer, GNS3, EVE-NG (Advanced Emulation).
+    2. CYBERSECURITY & RISK MANAGEMENT:
+       - TryHackMe: Highly recommended for Cloud & SOC Paths (AWS/Azure attack simulation).
+       - Hack The Box Academy: For realistic enterprise cloud breaches and Kubernetes security.
+       - PortSwigger Academy: For deep Web Security (Burp Suite).
+       - SANS CyberAces & OpenSecurityTraining.info: For fundamental and advanced risk management.
+       - Splunk Free Labs & Elastic Security: For live log analysis and threat hunting.
 
-    3. CLOUD SECURITY & PLATFORMS:
-       - Google Cloud Skills Boost (Live Labs/Qwiklabs), AWS Skill Builder, Microsoft Azure Labs.
-       - CLOUD ATTACK: CloudGoat (AWS), AzureGoat.
-       - IDENTITY: Auth0 Playground, AWS IAM Workshops.
-
-    4. DEVSECOPS:
-       - OWASP Juice Shop, DVWA, WebGoat, GitHub Security Labs (CodeQL), Snyk, SonarQube, Docker/Kubernetes Playgrounds.
+    3. NETWORKING & INFRASTRUCTURE:
+       - Cisco NetAcad & Packet Tracer: For foundational network security.
+       - GNS3 & EVE-NG: For advanced multi-vendor emulation.
 
     For each learning step, provide:
     - Detailed title, description, and time commitment.
-    - Specific technical skills (e.g., "SIEM Log Analysis", "IAM Policy Auditing", "Buffer Overflow exploitation").
+    - Specific technical skills (e.g., "GCP IAM Role Audit", "Kubernetes Pod Security Policy").
     - Prerequisites and relevant certifications.
 
-    For the "labs" section, include at least 5 highly relevant labs from the specific platforms listed above.
+    In the "labs" section, include at least 5 highly relevant labs. Ensure the "platform" name matches exactly one of the keys above (e.g., 'Google Cloud Skills Boost', 'TryHackMe', 'Splunk') so the app can correctly route the user.
   `;
 
   try {

@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { CareerRoadmap, LearningStep, Lab } from '../types';
 import { BookIcon, LabIcon, CertIcon, ChevronRightIcon, QuantumIcon, CpuIcon } from './icons';
 import { Play, Radio, Terminal, Clock, ExternalLink, Zap, Globe, ShieldCheck, Loader2, Lock, Cpu, Server } from 'lucide-react';
+import LabConsole from './LabConsole';
 
 interface RoadmapResultProps {
   roadmap: CareerRoadmap;
@@ -55,11 +56,10 @@ const getResourceUrl = (platform: string, labName?: string) => {
   const key = Object.keys(RESOURCE_LINKS).find(k => normalized.includes(k.toLowerCase()));
   let url = key ? RESOURCE_LINKS[key] : 'https://google.com/search?q=' + encodeURIComponent(platform + ' labs');
   
-  // If we have a specific lab name, try to append it as a search hint if the platform supports it
-  if (labName && url.includes('cloudskillsboost')) {
+  if (labName && (url.includes('cloudskillsboost') || url.includes('qwiklabs'))) {
     url = `https://www.cloudskillsboost.google/catalog?keywords=${encodeURIComponent(labName)}`;
   } else if (labName && url.includes('tryhackme')) {
-    url = `https://tryhackme.com/modules`; // Direct search is harder on THM without login
+    url = `https://tryhackme.com/modules`; 
   }
   
   return url;
@@ -67,10 +67,11 @@ const getResourceUrl = (platform: string, labName?: string) => {
 
 const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
   const [launchingLab, setLaunchingLab] = useState<Lab | null>(null);
+  const [activeLab, setActiveLab] = useState<Lab | null>(null);
   const [launchProgress, setLaunchProgress] = useState(0);
 
-  const handleJoinConsole = (lab: Lab) => {
-    setLaunchingLab(lab);
+  const handleJoinConsole = (name: string, platform: string, description: string) => {
+    setLaunchingLab({ name, platform, description });
     setLaunchProgress(0);
   };
 
@@ -81,10 +82,9 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
           if (prev >= 100) {
             clearInterval(interval);
             setTimeout(() => {
-              const url = getResourceUrl(launchingLab.platform, launchingLab.name);
-              window.open(url, '_blank');
+              setActiveLab(launchingLab);
               setLaunchingLab(null);
-            }, 500);
+            }, 600);
             return 100;
           }
           return prev + 5;
@@ -96,52 +96,61 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20 relative">
+      {/* Integrated Lab Console */}
+      {activeLab && (
+        <LabConsole lab={activeLab} onClose={() => setActiveLab(null)} />
+      )}
+
       {/* Lab Launching Overlay */}
       {launchingLab && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-[#0a0a0c]/90 backdrop-blur-md animate-in fade-in duration-300">
           <div className="max-w-md w-full p-8 bg-[#111114] border border-cyan-500/30 rounded-3xl shadow-2xl text-center space-y-6">
             <div className="relative inline-block">
-              <div className="w-20 h-20 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                <Loader2 className="w-10 h-10 animate-spin" />
+              <div className="w-24 h-24 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
+                <Loader2 className="w-12 h-12 animate-spin" />
               </div>
-              <div className="absolute -top-2 -right-2 bg-green-500 text-[8px] font-black px-2 py-1 rounded-full text-black uppercase animate-pulse">
-                Verified Access
+              <div className="absolute -top-2 -right-2 bg-green-500 text-[8px] font-black px-2 py-1 rounded-full text-black uppercase animate-pulse border border-black/20">
+                Full Auth
               </div>
             </div>
             
             <div className="space-y-2">
-              <h4 className="text-xl font-bold text-white uppercase tracking-tight">Provisioning Lab Environment</h4>
-              <p className="text-xs text-slate-500 font-mono tracking-widest uppercase">Target: {launchingLab.platform}</p>
+              <h4 className="text-2xl font-black text-white uppercase tracking-tight">Initializing Lab Console</h4>
+              <p className="text-[10px] text-slate-500 font-mono tracking-widest uppercase">{launchingLab.platform} // {launchingLab.name}</p>
             </div>
 
-            <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden border border-white/5">
+            <div className="w-full bg-white/5 rounded-full h-2 overflow-hidden border border-white/5">
               <div 
-                className="bg-cyan-500 h-full transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(6,182,212,0.5)]" 
+                className="bg-cyan-500 h-full transition-all duration-100 ease-linear shadow-[0_0_15px_rgba(6,182,212,0.6)]" 
                 style={{ width: `${launchProgress}%` }} 
               />
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              <div className="p-2 rounded-lg bg-black/40 border border-white/5 flex flex-col items-center gap-1">
-                <Lock className={`w-3 h-3 ${launchProgress > 20 ? 'text-green-500' : 'text-slate-600'}`} />
+              <div className={`p-2.5 rounded-xl bg-black/40 border transition-colors flex flex-col items-center gap-1.5 ${launchProgress > 25 ? 'border-green-500/30' : 'border-white/5'}`}>
+                <Lock className={`w-3.5 h-3.5 ${launchProgress > 25 ? 'text-green-500' : 'text-slate-700'}`} />
                 <span className="text-[7px] text-slate-500 uppercase font-black">IAM Sync</span>
               </div>
-              <div className="p-2 rounded-lg bg-black/40 border border-white/5 flex flex-col items-center gap-1">
-                <Cpu className={`w-3 h-3 ${launchProgress > 50 ? 'text-green-500' : 'text-slate-600'}`} />
-                <span className="text-[7px] text-slate-500 uppercase font-black">Compute Allocation</span>
+              <div className={`p-2.5 rounded-xl bg-black/40 border transition-colors flex flex-col items-center gap-1.5 ${launchProgress > 55 ? 'border-green-500/30' : 'border-white/5'}`}>
+                <Cpu className={`w-3.5 h-3.5 ${launchProgress > 55 ? 'text-green-500' : 'text-slate-700'}`} />
+                <span className="text-[7px] text-slate-500 uppercase font-black">Provisioning</span>
               </div>
-              <div className="p-2 rounded-lg bg-black/40 border border-white/5 flex flex-col items-center gap-1">
-                <Server className={`w-3 h-3 ${launchProgress > 80 ? 'text-green-500' : 'text-slate-600'}`} />
-                <span className="text-[7px] text-slate-500 uppercase font-black">VPC Tunnel</span>
+              <div className={`p-2.5 rounded-xl bg-black/40 border transition-colors flex flex-col items-center gap-1.5 ${launchProgress > 85 ? 'border-green-500/30' : 'border-white/5'}`}>
+                <Server className={`w-3.5 h-3.5 ${launchProgress > 85 ? 'text-green-500' : 'text-slate-700'}`} />
+                <span className="text-[7px] text-slate-500 uppercase font-black">Live Tunnel</span>
               </div>
             </div>
 
-            <p className="text-[10px] text-cyan-400/60 animate-pulse font-mono">
-              {launchProgress < 30 ? 'Requesting secure tenant...' :
-               launchProgress < 60 ? 'Bypassing egress filtering...' :
-               launchProgress < 90 ? 'Mapping virtual interfaces...' :
-               'Handshaking with external console...'}
-            </p>
+            <div className="pt-2">
+              <p className="text-[10px] text-cyan-400 font-mono animate-pulse uppercase tracking-[0.2em]">
+                {launchProgress < 20 ? 'Connecting to verified gateway...' :
+                 launchProgress < 40 ? 'Authenticating with cloud tenant...' :
+                 launchProgress < 60 ? 'Allocating ephemeral compute resources...' :
+                 launchProgress < 80 ? 'Configuring VPC network isolation...' :
+                 launchProgress < 100 ? 'Syncing lab objectives to console...' :
+                 'Environment Ready. Opening Terminal.'}
+              </p>
+            </div>
           </div>
         </div>
       )}
@@ -225,9 +234,12 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
                   </div>
                   
                   <div className="flex flex-wrap gap-4">
-                    <button className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg active:scale-95">
+                    <button 
+                      onClick={() => handleJoinConsole(step.title, "Strategic Milestone", step.description)}
+                      className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg active:scale-95"
+                    >
                       <Zap className="w-4 h-4 fill-white" />
-                      Request Full Permission
+                      Join Live Console
                     </button>
                     <button className="flex items-center gap-2 px-6 py-3 bg-white/5 text-slate-300 text-[10px] font-black uppercase tracking-widest rounded-xl border border-white/10 hover:bg-white/10 transition-all">
                       <Play className="w-4 h-4" />
@@ -291,7 +303,7 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
                 <h5 className="text-sm font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors relative z-10 leading-tight">{lab.name}</h5>
                 <p className="text-[11px] text-slate-500 leading-relaxed mb-5 relative z-10 line-clamp-2">{lab.description}</p>
                 <button 
-                  onClick={() => handleJoinConsole(lab)}
+                  onClick={() => handleJoinConsole(lab.name, lab.platform, lab.description)}
                   className="w-full py-2.5 bg-white/5 hover:bg-indigo-600 text-[9px] font-black text-white flex items-center justify-center gap-2 uppercase tracking-widest rounded-xl transition-all relative z-10 shadow-inner"
                 >
                   Join Live Console <ChevronRightIcon className="w-3.5 h-3.5" />
@@ -311,7 +323,7 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
           </div>
           <h4 className="text-lg font-bold mb-3 text-white">Advanced AI Mentorship</h4>
           <p className="text-xs text-slate-500 mb-8 leading-relaxed px-4">
-            Stuck on a TryHackMe challenge, HTB box, or Packet Tracer config? Launch a live consult.
+            Stuck on a TryHackMe challenge, HTB box, or a Google Cloud IAM lab? Launch a live consult.
           </p>
           <button className="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-2xl font-black transition-all uppercase text-[10px] tracking-widest shadow-xl shadow-cyan-900/40">
              Launch Voice Mentor
