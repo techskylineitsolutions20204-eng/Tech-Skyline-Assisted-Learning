@@ -28,28 +28,31 @@ export const generateLearningPath = async (
     - Growth (2027–2029)
     - Future Frontier (2028–2030)
     
-    You MUST prioritize recommending these specific "Full Permission" industry-standard labs and platforms based on the learning level:
+    You MUST prioritize recommending these specific "Full Permission" industry-standard labs and platforms:
 
     1. CYBERSECURITY & RISK MANAGEMENT:
-       - Red Team / Offensive: TryHackMe (Guided paths), Hack The Box Academy (Advanced), PortSwigger Academy (Web Security), PentesterLab.
-       - Blue Team / SOC: RangeForce (Enterprise simulations), Blue Team Labs Online (SOC practice), Security Onion (SIEM), Splunk Work+ / Splunk BOTS.
-       - Governance & Risk: ISC2 (1MCC), SANS CyberAces, OpenSecurityTraining.info, CyberDegrees.org.
-       - Forensics & Threat Intelligence: Autopsy, Volatility, Any.run, Cuckoo Sandbox.
+       - RED TEAM: TryHackMe (Guided labs), Hack The Box Academy (Advanced), PortSwigger Academy (Web), PentesterLab, Immersive Labs.
+       - BLUE TEAM / SOC: RangeForce (Enterprise Cyber Range), Blue Team Labs Online (SOC), Security Onion (SIEM), Splunk Work+ / Splunk BOTS.
+       - GRC & INFRA: ISC2 (1MCC), SANS CyberAces, OpenSecurityTraining.info.
+       - FORENSICS: Autopsy, Volatility, Any.run, Cuckoo Sandbox.
 
-    2. INFRASTRUCTURE & CLOUD:
-       - Networking: Cisco Networking Academy (NetAcad), Cisco Packet Tracer, GNS3, EVE-NG.
-       - Cloud Security: AWS Skill Builder / AWS Academy, Microsoft Azure Labs, Google Cloud Skills Boost (Qwiklabs), CloudGoat (AWS Attack), AzureGoat.
+    2. NETWORKING & INFRASTRUCTURE:
+       - Cisco Networking Academy (NetAcad), Cisco Packet Tracer, GNS3, EVE-NG (Advanced Emulation).
 
-    3. DEVSECOPS & APPSEC:
-       - Vulnerable Apps: OWASP Juice Shop, DVWA, WebGoat.
-       - CI/CD Security: Snyk, SonarQube, GitHub Security Labs (CodeQL), Docker & Kubernetes Playgrounds.
+    3. CLOUD SECURITY & PLATFORMS:
+       - Google Cloud Skills Boost (Live Labs/Qwiklabs), AWS Skill Builder, Microsoft Azure Labs.
+       - CLOUD ATTACK: CloudGoat (AWS), AzureGoat.
+       - IDENTITY: Auth0 Playground, AWS IAM Workshops.
+
+    4. DEVSECOPS:
+       - OWASP Juice Shop, DVWA, WebGoat, GitHub Security Labs (CodeQL), Snyk, SonarQube, Docker/Kubernetes Playgrounds.
 
     For each learning step, provide:
     - Detailed title, description, and time commitment.
-    - Specific technical skills (e.g., "Burp Suite Intruder usage", "SIEM Detection Rule authoring").
+    - Specific technical skills (e.g., "SIEM Log Analysis", "IAM Policy Auditing", "Buffer Overflow exploitation").
     - Prerequisites and relevant certifications.
 
-    For the "labs" section, ensure you include at least 5 highly relevant labs from the specific platforms listed above.
+    For the "labs" section, include at least 5 highly relevant labs from the specific platforms listed above.
   `;
 
   try {

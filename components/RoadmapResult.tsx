@@ -3,10 +3,10 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
 */
-import React from 'react';
-import { CareerRoadmap, LearningStep } from '../types';
+import React, { useState, useEffect } from 'react';
+import { CareerRoadmap, LearningStep, Lab } from '../types';
 import { BookIcon, LabIcon, CertIcon, ChevronRightIcon, QuantumIcon, CpuIcon } from './icons';
-import { Play, Radio, Terminal, Clock, BookOpen, ExternalLink, Zap, Shield, Globe, Server, Activity, Search, Code, ShieldCheck, Database } from 'lucide-react';
+import { Play, Radio, Terminal, Clock, ExternalLink, Zap, Globe, ShieldCheck, Loader2, Lock, Cpu, Server } from 'lucide-react';
 
 interface RoadmapResultProps {
   roadmap: CareerRoadmap;
@@ -23,49 +23,129 @@ const RESOURCE_LINKS: Record<string, string> = {
   'SANS CyberAces': 'https://www.sans.org/cyberaces',
   'ISC2': 'https://www.isc2.org/landing/1mcc',
   'ISC2 1MCC': 'https://www.isc2.org/landing/1mcc',
-  'CyberDegrees': 'https://www.cyberdegrees.org/resources/free-online-courses/',
   'NetAcad': 'https://www.cisco.com/site/us/en/learn/training-certifications/training/netacad/index.html',
   'Packet Tracer': 'https://www.netacad.com/courses/packet-tracer',
   'GNS3': 'https://www.gns3.com/',
   'EVE-NG': 'https://www.eve-ng.net/',
   'RangeForce': 'https://www.rangeforce.com/',
   'Splunk': 'https://www.splunk.com/en_us/training/free-courses/splunk-fundamentals-1.html',
-  'Splunk BOTS': 'https://bots.splunk.com/',
   'Blue Team Labs': 'https://blueteamlabs.online/',
   'Security Onion': 'https://securityonion.net/',
   'ELK Stack': 'https://www.elastic.co/security',
-  'Elastic': 'https://www.elastic.co/security',
   'CloudGoat': 'https://github.com/RhinoSecurityLabs/cloudgoat',
   'AzureGoat': 'https://github.com/ine-labs/AzureGoat',
   'OWASP Juice Shop': 'https://owasp.org/www-project-juice-shop/',
-  'WebGoat': 'https://owasp.org/www-project-webgoat/',
-  'DVWA': 'https://github.com/digininja/DVWA',
-  'GitHub Security': 'https://securitylab.github.com/',
-  'Snyk': 'https://snyk.io/',
-  'SonarQube': 'https://www.sonarqube.org/',
-  'Google Skills': 'https://www.skills.google/paths',
   'Google Cloud Skills Boost': 'https://www.cloudskillsboost.google/',
+  'Cloud Skills Boost': 'https://www.cloudskillsboost.google/',
+  'Qwiklabs': 'https://www.cloudskillsboost.google/',
+  'Google Cloud Shell': 'https://shell.cloud.google.com/',
+  'Google Cloud Free Tier': 'https://cloud.google.com/free',
+  'Coursera': 'https://www.coursera.org/google-certificates/cybersecurity-certificate',
+  'Google Cybersecurity': 'https://www.coursera.org/google-certificates/cybersecurity-certificate',
   'AWS Skill Builder': 'https://explore.skillbuilder.aws/',
   'Microsoft Learn': 'https://learn.microsoft.com/',
   'Autopsy': 'https://www.autopsy.com/',
   'Volatility': 'https://www.volatilityfoundation.org/',
   'OpenSecurityTraining': 'https://opensecuritytraining.info/',
-  'Any.run': 'https://any.run/',
-  'freeCodeCamp': 'https://www.freecodecamp.org/',
-  'Replit': 'https://replit.com/',
-  'Google Colab': 'https://colab.research.google.com/',
-  'IBM SkillsBuild': 'https://skillsbuild.org/'
+  'GitHub Security': 'https://securitylab.github.com/'
 };
 
-const getResourceUrl = (platform: string) => {
+const getResourceUrl = (platform: string, labName?: string) => {
   const normalized = platform.toLowerCase();
   const key = Object.keys(RESOURCE_LINKS).find(k => normalized.includes(k.toLowerCase()));
-  return key ? RESOURCE_LINKS[key] : '#';
+  let url = key ? RESOURCE_LINKS[key] : 'https://google.com/search?q=' + encodeURIComponent(platform + ' labs');
+  
+  // If we have a specific lab name, try to append it as a search hint if the platform supports it
+  if (labName && url.includes('cloudskillsboost')) {
+    url = `https://www.cloudskillsboost.google/catalog?keywords=${encodeURIComponent(labName)}`;
+  } else if (labName && url.includes('tryhackme')) {
+    url = `https://tryhackme.com/modules`; // Direct search is harder on THM without login
+  }
+  
+  return url;
 };
 
 const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
+  const [launchingLab, setLaunchingLab] = useState<Lab | null>(null);
+  const [launchProgress, setLaunchProgress] = useState(0);
+
+  const handleJoinConsole = (lab: Lab) => {
+    setLaunchingLab(lab);
+    setLaunchProgress(0);
+  };
+
+  useEffect(() => {
+    if (launchingLab) {
+      const interval = setInterval(() => {
+        setLaunchProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+              const url = getResourceUrl(launchingLab.platform, launchingLab.name);
+              window.open(url, '_blank');
+              setLaunchingLab(null);
+            }, 500);
+            return 100;
+          }
+          return prev + 5;
+        });
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [launchingLab]);
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20 relative">
+      {/* Lab Launching Overlay */}
+      {launchingLab && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-[#0a0a0c]/90 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="max-w-md w-full p-8 bg-[#111114] border border-cyan-500/30 rounded-3xl shadow-2xl text-center space-y-6">
+            <div className="relative inline-block">
+              <div className="w-20 h-20 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
+                <Loader2 className="w-10 h-10 animate-spin" />
+              </div>
+              <div className="absolute -top-2 -right-2 bg-green-500 text-[8px] font-black px-2 py-1 rounded-full text-black uppercase animate-pulse">
+                Verified Access
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <h4 className="text-xl font-bold text-white uppercase tracking-tight">Provisioning Lab Environment</h4>
+              <p className="text-xs text-slate-500 font-mono tracking-widest uppercase">Target: {launchingLab.platform}</p>
+            </div>
+
+            <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden border border-white/5">
+              <div 
+                className="bg-cyan-500 h-full transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(6,182,212,0.5)]" 
+                style={{ width: `${launchProgress}%` }} 
+              />
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              <div className="p-2 rounded-lg bg-black/40 border border-white/5 flex flex-col items-center gap-1">
+                <Lock className={`w-3 h-3 ${launchProgress > 20 ? 'text-green-500' : 'text-slate-600'}`} />
+                <span className="text-[7px] text-slate-500 uppercase font-black">IAM Sync</span>
+              </div>
+              <div className="p-2 rounded-lg bg-black/40 border border-white/5 flex flex-col items-center gap-1">
+                <Cpu className={`w-3 h-3 ${launchProgress > 50 ? 'text-green-500' : 'text-slate-600'}`} />
+                <span className="text-[7px] text-slate-500 uppercase font-black">Compute Allocation</span>
+              </div>
+              <div className="p-2 rounded-lg bg-black/40 border border-white/5 flex flex-col items-center gap-1">
+                <Server className={`w-3 h-3 ${launchProgress > 80 ? 'text-green-500' : 'text-slate-600'}`} />
+                <span className="text-[7px] text-slate-500 uppercase font-black">VPC Tunnel</span>
+              </div>
+            </div>
+
+            <p className="text-[10px] text-cyan-400/60 animate-pulse font-mono">
+              {launchProgress < 30 ? 'Requesting secure tenant...' :
+               launchProgress < 60 ? 'Bypassing egress filtering...' :
+               launchProgress < 90 ? 'Mapping virtual interfaces...' :
+               'Handshaking with external console...'}
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="lg:col-span-2 space-y-8">
         {/* Success Header */}
         <section className="bg-gradient-to-br from-cyan-600/10 to-indigo-600/10 border border-cyan-500/20 rounded-3xl p-8 overflow-hidden relative shadow-xl">
@@ -147,7 +227,7 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
                   <div className="flex flex-wrap gap-4">
                     <button className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg active:scale-95">
                       <Zap className="w-4 h-4 fill-white" />
-                      Grant Permission
+                      Request Full Permission
                     </button>
                     <button className="flex items-center gap-2 px-6 py-3 bg-white/5 text-slate-300 text-[10px] font-black uppercase tracking-widest rounded-xl border border-white/10 hover:bg-white/10 transition-all">
                       <Play className="w-4 h-4" />
@@ -168,7 +248,7 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
             Global Tech Portal Access
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 relative z-10">
-            {['TryHackMe', 'Hack The Box', 'PortSwigger Academy', 'SANS CyberAces', 'ISC2 1MCC', 'Cisco Packet Tracer', 'RangeForce', 'Blue Team Labs', 'Security Onion', 'Splunk Work+', 'AWS Skill Builder', 'Google Cloud Boost', 'EVE-NG'].map(platform => (
+            {['TryHackMe', 'Hack The Box', 'Google Cloud Skills Boost', 'PortSwigger Academy', 'Cisco Packet Tracer', 'Splunk Work+', 'AWS Skill Builder', 'RangeForce', 'Blue Team Labs', 'Security Onion', 'GNS3', 'EVE-NG', 'OWASP Juice Shop'].map(platform => (
               <a 
                 key={platform}
                 href={getResourceUrl(platform)}
@@ -210,14 +290,12 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
                 </div>
                 <h5 className="text-sm font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors relative z-10 leading-tight">{lab.name}</h5>
                 <p className="text-[11px] text-slate-500 leading-relaxed mb-5 relative z-10 line-clamp-2">{lab.description}</p>
-                <a 
-                  href={getResourceUrl(lab.platform)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button 
+                  onClick={() => handleJoinConsole(lab)}
                   className="w-full py-2.5 bg-white/5 hover:bg-indigo-600 text-[9px] font-black text-white flex items-center justify-center gap-2 uppercase tracking-widest rounded-xl transition-all relative z-10 shadow-inner"
                 >
                   Join Live Console <ChevronRightIcon className="w-3.5 h-3.5" />
-                </a>
+                </button>
               </div>
             ))}
           </div>
@@ -233,7 +311,7 @@ const RoadmapResult: React.FC<RoadmapResultProps> = ({ roadmap, onReset }) => {
           </div>
           <h4 className="text-lg font-bold mb-3 text-white">Advanced AI Mentorship</h4>
           <p className="text-xs text-slate-500 mb-8 leading-relaxed px-4">
-            Stuck on a TryHackMe challenge or a complex CloudGoat scenario? Launch a live consult.
+            Stuck on a TryHackMe challenge, HTB box, or Packet Tracer config? Launch a live consult.
           </p>
           <button className="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-2xl font-black transition-all uppercase text-[10px] tracking-widest shadow-xl shadow-cyan-900/40">
              Launch Voice Mentor
